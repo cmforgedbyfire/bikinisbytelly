@@ -1,0 +1,74 @@
+name: Flask App CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Create directories
+      run: |
+        mkdir -p instance receipts uploads static/uploads
+    
+    - name: Set environment variables
+      run: |
+        echo "FLASK_APP=app.py" >> $GITHUB_ENV
+        echo "FLASK_ENV=production" >> $GITHUB_ENV
+    
+    - name: Initialize database
+      env:
+        SECRET_KEY: ${{ secrets.SECRET_KEY || 'dev-secret-key-change-in-production' }}
+        MAIL_USERNAME: bikinisbytelly@outlook.com
+        MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD || 'dummy-password' }}
+        STRIPE_PUBLIC_KEY: ${{ secrets.STRIPE_PUBLIC_KEY || 'pk_test_dummy' }}
+        STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY || 'sk_test_dummy' }}
+        ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD || 'admin123' }}
+      run: |
+        python << EOF
+        from app import app, db
+        with app.app_context():
+            db.create_all()
+            print("Database initialized successfully")
+        EOF
+    
+    - name: Run Flask app (test)
+      env:
+        SECRET_KEY: ${{ secrets.SECRET_KEY || 'dev-secret-key-change-in-production' }}
+        MAIL_USERNAME: bikinisbytelly@outlook.com
+        MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD || 'dummy-password' }}
+        STRIPE_PUBLIC_KEY: ${{ secrets.STRIPE_PUBLIC_KEY || 'pk_test_dummy' }}
+        STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY || 'sk_test_dummy' }}
+        ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD || 'admin123' }}
+      run: |
+        timeout 5 python app.py || true
+    
+    - name: Commit and push if database changed
+      run: |
+        git config --local user.email "bikinisbytelly@outlook.com"
+        git config --local user.name "Bikinis By Telly"
+        git add -A
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update database and files" && git push)
+      continue-on-error: true
