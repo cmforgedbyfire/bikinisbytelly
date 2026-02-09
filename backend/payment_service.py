@@ -1,59 +1,82 @@
-import stripe
+from paypalrestsdk import Payment, configure
+import json
 
 class PaymentService:
     def __init__(self, app):
         self.app = app
-        stripe.api_key = app.config['STRIPE_SECRET_KEY']
-        self.webhook_secret = app.config.get('STRIPE_WEBHOOK_SECRET', '')
+        configure({
+            "mode": app.config.get('PAYPAL_MODE', 'sandbox'),  # sandbox or live
+            "client_id": app.config.get('PAYPAL_CLIENT_ID'),
+            "client_secret": app.config.get('PAYPAL_CLIENT_SECRET')
+        })
     
-    def create_payment_intent(self, amount, order_id, customer_email):
-        """Create a Stripe payment intent"""
+    def create_payment(self, amount, order_id, customer_email, return_url, cancel_url):
+        """Create a PayPal payment"""
         try:
-            intent = stripe.PaymentIntent.create(
-                amount=amount,  # Amount in cents
-                currency='usd',
-                receipt_email=customer_email,
-                metadata={
-                    'order_id': order_id,
-                    'business': 'Bikinis By Telly'
+            payment = Payment({
+                "intent": "sale",
+                "payer": {
+                    "payment_method": "paypal"
                 },
-                description=f'Order payment for Bikinis By Telly'
-            )
-            return intent
-        except stripe.error.StripeError as e:
-            self.app.logger.error(f"Stripe error: {str(e)}")
-            raise
-    
-    def handle_webhook(self, payload, sig_header):
-        """Handle Stripe webhook events"""
-        try:
-            if self.webhook_secret:
-                event = stripe.Webhook.construct_event(
-                    payload, sig_header, self.webhook_secret
-                )
-            else:
-                # For development without webhook secret
-                import json
-                event = json.loads(payload)
+                "redirect_urls": {
+                    "return_url": return_url,
+                    "cancel_url": cancel_url
+                },
+                "transactions": [{
+                    "amount": {
+                        "total": f"{amount:.2f}",
+                        "currency": "USD"
+                    },
+                    "description": f"Bikinis By Telly - Order #{order_id}",
+                    "custom": str(order_id),
+                    "invoice_number": str(order_id)
+                }]
+            })
             
-            return event
-        except ValueError as e:
-            # Invalid payload
-            self.app.logger.error(f"Invalid webhook payload: {str(e)}")
-            raise
-        except stripe.error.SignatureVerificationError as e:
-            # Invalid signature
-            self.app.logger.error(f"Invalid webhook signature: {str(e)}")
+            if payment.create():
+                return payment
+            else:
+                self.app.logger.error(f"PayPal error: {payment.error}")
+                raise Exception(payment.error)
+        except Exception as e:
+            self.app.logger.error(f"PayPal error: {str(e)}")
             raise
     
-    def create_refund(self, payment_intent_id, amount=None):
+    def execute_payment(self, payment_id, payer_id):
+        """Execute PayPal payment after user approval"""
+        try:
+            payment = Payment.find(payment_id)
+            if payment.execute({"payer_id": payer_id}):
+                return payment
+            else:
+                self.app.logger.error(f"PayPal execution error: {payment.error}")
+                raise Exception(payment.error)
+        except Exception as e:
+            self.app.logger.error(f"PayPal execution error: {str(e)}")
+            raise
+    
+    def create_refund(self, sale_id, amount=None):
         """Create a refund for a payment"""
         try:
-            refund = stripe.Refund.create(
-                payment_intent=payment_intent_id,
-                amount=amount  # Optional: partial refund amount in cents
-            )
-            return refund
-        except stripe.error.StripeError as e:
+            from paypalrestsdk import Sale
+            sale = Sale.find(sale_id)
+            
+            refund_request = {}
+            if amount:
+                refund_request = {
+                    "amount": {
+                        "total": f"{amount:.2f}",
+                        "currency": "USD"
+                    }
+                }
+            
+            refund = sale.refund(refund_request)
+            if refund.success():
+                return refund
+            else:
+                self.app.logger.error(f"Refund error: {refund.error}")
+                raise Exception(refund.error)
+        except Exception as e:
             self.app.logger.error(f"Refund error: {str(e)}")
             raise
+

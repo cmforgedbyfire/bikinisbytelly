@@ -67,13 +67,11 @@
                     <!-- Payment Method -->
                     <div class="form-section">
                         <h2>Payment Method</h2>
-                        <div id="card-element" class="card-element">
-                            <!-- Stripe card element -->
-                        </div>
-                        <div id="card-errors" class="card-errors"></div>
+                        <div id="paypal-button-container"></div>
+                        <p class="payment-note">You'll be redirected to PayPal to complete your purchase securely.</p>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary btn-lg btn-block" id="submit-payment">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block" id="submit-payment" style="display:none;">
                         Complete Order
                     </button>
                 </form>
@@ -112,6 +110,6 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://js.stripe.com/v3/"></script>
+<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=USD"></script>
 <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
 {% endblock %}

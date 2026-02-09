@@ -20,9 +20,10 @@ class Config:
     MAIL_PASSWORD = os.getenv('MAIL_PASSWORD', '')
     MAIL_DEFAULT_SENDER = os.getenv('BUSINESS_EMAIL', 'bikinisbytelly@outlook.com')
     
-    # Stripe
-    STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
-    STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
+    # PayPal
+    PAYPAL_MODE = os.getenv('PAYPAL_MODE', 'sandbox')  # 'sandbox' or 'live'
+    PAYPAL_CLIENT_ID = os.getenv('PAYPAL_CLIENT_ID', '')
+    PAYPAL_CLIENT_SECRET = os.getenv('PAYPAL_CLIENT_SECRET', '')
     
     # Business
     BUSINESS_EMAIL = os.getenv('BUSINESS_EMAIL', 'bikinisbytelly@outlook.com')

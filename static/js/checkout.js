@@ -1,12 +1,8 @@
-// Checkout Page with Stripe Integration
-
-let stripe;
-let cardElement;
+// Checkout Page with PayPal Integration
 
 document.addEventListener('DOMContentLoaded', async () => {
     loadCheckoutItems();
-    initializeStripe();
-    setupCheckoutForm();
+    initializePayPal();
 });
 
 function loadCheckoutItems() {
@@ -47,104 +43,80 @@ function calculateCheckoutTotals() {
     return total;
 }
 
-async function initializeStripe() {
-    try {
-        // Fetch Stripe public key from server
-        const response = await fetch('/api/stripe/public-key');
-        const { publicKey } = await response.json();
-        
-        stripe = Stripe(publicKey);
-        const elements = stripe.elements();
-        
-        cardElement = elements.create('card', {
-            style: {
-                base: {
-                    fontSize: '16px',
-                    color: '#2C3E50',
-                    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
-                }
-            }
-        });
-        
-        cardElement.mount('#card-element');
-        
-        cardElement.on('change', (event) => {
-            const displayError = document.getElementById('card-errors');
-            if (event.error) {
-                displayError.textContent = event.error.message;
-            } else {
-                displayError.textContent = '';
-            }
-        });
-    } catch (error) {
-        console.error('Error initializing Stripe:', error);
-        showAlert('Payment system error. Please try again later.', 'error');
-    }
-}
-
-function setupCheckoutForm() {
+function initializePayPal() {
     const form = document.getElementById('checkout-form');
     
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const submitBtn = document.getElementById('submit-payment');
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Processing...';
-        
-        try {
-            // Get form data
+    paypal.Buttons({
+        createOrder: async function() {
+            // Validate form first
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                throw new Error('Please fill in all required fields');
+            }
+            
             const formData = new FormData(form);
             const orderData = {
                 customer: Object.fromEntries(formData),
                 items: cart.items,
-                total: calculateCheckoutTotals()
+                totals: {
+                    subtotal: cart.getTotal(),
+                    shipping: cart.getTotal() >= 100 ? 0 : 10,
+                    tax: cart.getTotal() * 0.08,
+                    total: calculateCheckoutTotals()
+                }
             };
             
-            // Create payment intent
-            const response = await fetch('/api/create-payment-intent', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(orderData)
-            });
-            
-            const { clientSecret, orderId } = await response.json();
-            
-            // Confirm payment with Stripe
-            const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-                payment_method: {
-                    card: cardElement,
-                    billing_details: {
-                        name: `${orderData.customer.first_name} ${orderData.customer.last_name}`,
-                        email: orderData.customer.email,
-                        address: {
-                            line1: orderData.customer.address,
-                            line2: orderData.customer.address2,
-                            city: orderData.customer.city,
-                            state: orderData.customer.state,
-                            postal_code: orderData.customer.zip
-                        }
-                    }
-                }
-            });
-            
-            if (error) {
-                throw new Error(error.message);
-            }
-            
-            if (paymentIntent.status === 'succeeded') {
-                // Clear cart
-                cart.clear();
+            try {
+                const response = await fetch('/api/paypal/create-payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData)
+                });
                 
-                // Redirect to success page
-                window.location.href = `/order-confirmation/${orderId}`;
+                const data = await response.json();
+                
+                if (data.success) {
+                    return data.payment_id;
+                } else {
+                    throw new Error(data.error || 'Payment creation failed');
+                }
+            } catch (error) {
+                console.error('Error creating payment:', error);
+                showAlert('Error creating payment. Please try again.', 'error');
+                throw error;
             }
-            
-        } catch (error) {
-            console.error('Payment error:', error);
-            showAlert(error.message || 'Payment failed. Please try again.', 'error');
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Complete Order';
+        },
+        onApprove: async function(data) {
+            try {
+                const response = await fetch('/api/paypal/execute-payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        payment_id: data.orderID,
+                        payer_id: data.payerID
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    cart.clear();
+                    window.location.href = `/order-confirmation/${result.order_id}`;
+                } else {
+                    showAlert('Payment failed. Please try again.', 'error');
+                }
+            } catch (error) {
+                console.error('Error executing payment:', error);
+                showAlert('Payment processing error. Please contact support.', 'error');
+            }
+        },
+        onError: function(err) {
+            console.error('PayPal error:', err);
+            showAlert('Payment error. Please try again.', 'error');
         }
-    });
+    }).render('#paypal-button-container');
 }

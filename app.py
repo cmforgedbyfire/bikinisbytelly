@@ -58,7 +58,7 @@ def cart():
 
 @app.route('/checkout')
 def checkout():
-    return render_template('checkout.html')
+    return render_template('checkout.html', paypal_client_id=app.config['PAYPAL_CLIENT_ID'])
 
 @app.route('/custom-order')
 def custom_order():
@@ -231,12 +231,12 @@ def api_custom_order():
     
     return jsonify({'success': True, 'order_id': custom_order.id})
 
-@app.route('/api/stripe/public-key')
-def api_stripe_public_key():
-    return jsonify({'publicKey': app.config['STRIPE_PUBLIC_KEY']})
+@app.route('/api/paypal/client-id')
+def api_paypal_client_id():
+    return jsonify({'clientId': app.config['PAYPAL_CLIENT_ID']})
 
-@app.route('/api/create-payment-intent', methods=['POST'])
-def api_create_payment_intent():
+@app.route('/api/paypal/create-payment', methods=['POST'])
+def api_paypal_create_payment():
     data = request.json
     
     # Generate order number
@@ -244,6 +244,7 @@ def api_create_payment_intent():
     
     # Create order
     customer = data['customer']
+    totals = data['totals']
     order = Order(
         order_number=order_number,
         customer_name=f"{customer['first_name']} {customer['last_name']}",
@@ -254,44 +255,49 @@ def api_create_payment_intent():
         shipping_state=customer['state'],
         shipping_zip=customer['zip'],
         items=data['items'],
-        subtotal=data['total'] / 1.08,  # Reverse calculate from total
-        shipping_cost=10 if data['total'] < 100 else 0,
-        tax=data['total'] * 0.08 / 1.08,
-        total=data['total']
+        subtotal=totals['subtotal'],
+        shipping_cost=totals['shipping'],
+        tax=totals['tax'],
+        total=totals['total']
     )
     
     db.session.add(order)
     db.session.commit()
     
-    # Create payment intent with Stripe
-    intent = payment_service.create_payment_intent(
-        amount=int(data['total'] * 100),  # Convert to cents
+    # Create PayPal payment
+    return_url = f"{request.url_root}checkout/success"
+    cancel_url = f"{request.url_root}checkout"
+    
+    payment = payment_service.create_payment(
+        amount=totals['total'],
         order_id=order.id,
-        customer_email=customer['email']
+        customer_email=customer['email'],
+        return_url=return_url,
+        cancel_url=cancel_url
     )
     
-    order.payment_intent_id = intent.id
+    order.payment_intent_id = payment.id
     db.session.commit()
     
     return jsonify({
-        'clientSecret': intent.client_secret,
-        'orderId': order.id
+        'success': True,
+        'payment_id': payment.id
     })
 
-# Payment webhook
-@app.route('/webhook/stripe', methods=['POST'])
-def stripe_webhook():
-    payload = request.data
-    sig_header = request.headers.get('Stripe-Signature')
+# PayPal execute payment
+@app.route('/api/paypal/execute-payment', methods=['POST'])
+def api_paypal_execute_payment():
+    data = request.json
+    payment_id = data['payment_id']
+    payer_id = data['payer_id']
     
-    event = payment_service.handle_webhook(payload, sig_header)
-    
-    if event['type'] == 'payment_intent.succeeded':
-        payment_intent = event['data']['object']
-        order_id = payment_intent.metadata.get('order_id')
+    try:
+        payment = payment_service.execute_payment(payment_id, payer_id)
         
-        if order_id:
-            order = Order.query.get(order_id)
+        # Find order by payment ID
+        order = Order.query.filter_by(payment_intent_id=payment_id).first()
+        
+        if order:
             order.payment_status = 'paid'
             db.session.commit()
             
@@ -300,8 +306,17 @@ def stripe_webhook():
             
             # Send confirmation email with receipt
             email_service.send_order_confirmation(order, receipt_path)
-    
-    return jsonify({'success': True})
+            
+            return jsonify({
+                'success': True,
+                'order_id': order.id
+            })
+        else:
+            return jsonify({'success': False, 'error': 'Order not found'}), 404
+            
+    except Exception as e:
+        app.logger.error(f"PayPal execution error: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
