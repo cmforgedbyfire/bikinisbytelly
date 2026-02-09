@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Custom Order Request Received - Bikinis By Telly{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Custom Order Request Received! 🎨</h1>
+    </div>
+</section>
+
+<section class="confirmation-section">
+    <div class="container">
+        <div class="confirmation-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle" style="font-size: 5rem; color: var(--success);"></i>
+            </div>
+            
+            <h2>Thank You, {{ order.customer_name }}!</h2>
+            <p>We've received your custom bikini request and we're excited to create something special for you.</p>
+            
+            <div class="order-summary-box">
+                <h3>Request Details</h3>
+                <p><strong>Request Number:</strong> {{ order.order_number }}</p>
+                <p><strong>Submitted:</strong> {{ order.created_at.strftime('%B %d, %Y') }}</p>
+                <p><strong>Style:</strong> {{ order.style }}</p>
+                <p><strong>Primary Color:</strong> {{ order.primary_color }}</p>
+                {% if order.secondary_color %}
+                <p><strong>Secondary Color:</strong> {{ order.secondary_color }}</p>
+                {% endif %}
+                <p><strong>Pattern:</strong> {{ order.pattern }}</p>
+                <p><strong>Budget Range:</strong> {{ order.budget }}</p>
+            </div>
+            
+            <div class="next-steps">
+                <h3>What Happens Next?</h3>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <i class="fas fa-search"></i>
+                        <h4>Review</h4>
+                        <p>We'll review your specifications within 24 hours</p>
+                    </div>
+                    <div class="step-card">
+                        <i class="fas fa-dollar-sign"></i>
+                        <h4>Quote</h4>
+                        <p>You'll receive a detailed quote and timeline</p>
+                    </div>
+                    <div class="step-card">
+                        <i class="fas fa-handshake"></i>
+                        <h4>Approval</h4>
+                        <p>Approve the quote to begin production</p>
+                    </div>
+                    <div class="step-card">
+                        <i class="fas fa-magic"></i>
+                        <h4>Creation</h4>
+                        <p>Your custom bikini is handcrafted</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="email-notice">
+                <p><i class="fas fa-envelope"></i> A confirmation email has been sent to <strong>{{ order.customer_email }}</strong></p>
+            </div>
+            
+            <div class="confirmation-actions">
+                <a href="{{ url_for('products') }}" class="btn btn-primary">Browse Our Collection</a>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.step-card {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.step-card i {
+    font-size: 2.5rem;
+    color: var(--secondary-aqua);
+    margin-bottom: var(--spacing-md);
+}
+
+.email-notice {
+    background: var(--neutral-sand);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin: var(--spacing-lg) 0;
+    text-align: center;
+}
+</style>
+{% endblock %}

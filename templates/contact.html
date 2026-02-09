@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - Bikinis By Telly{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Contact Us</h1>
+        <p>We'd love to hear from you!</p>
+    </div>
+</section>
+
+<section class="contact-section">
+    <div class="container">
+        <div class="contact-layout">
+            <div class="contact-info">
+                <h2>Get in Touch</h2>
+                <p>Have a question about our bikinis or want to discuss a custom order? We're here to help!</p>
+                
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <a href="mailto:bikinisbytelly@outlook.com">bikinisbytelly@outlook.com</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Response Time</h4>
+                            <p>Within 24 hours</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fab fa-instagram"></i>
+                        <div>
+                            <h4>Social Media</h4>
+                            <p>@bikinisbytelly</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-preview">
+                    <h3>Quick Answers</h3>
+                    <p><strong>Processing Time:</strong> 2-3 weeks for custom orders</p>
+                    <p><strong>Shipping:</strong> Free on orders over $100</p>
+                    <p><strong>Returns:</strong> Contact us within 7 days</p>
+                    <a href="{{ url_for('faq') }}" class="btn btn-secondary">View Full FAQ</a>
+                </div>
+            </div>
+            
+            <div class="contact-form-container">
+                <h2>Send Us a Message</h2>
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name: *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email: *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject: *</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Select a subject</option>
+                            <option value="custom-order">Custom Order Inquiry</option>
+                            <option value="existing-order">Existing Order Question</option>
+                            <option value="sizing">Sizing Help</option>
+                            <option value="product-question">Product Question</option>
+                            <option value="shipping">Shipping Question</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message: *</label>
+                        <textarea id="message" name="message" rows="6" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('contact-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+    
+    try {
+        const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        
+        if (response.ok) {
+            alert('Message sent successfully! We\'ll get back to you soon.');
+            e.target.reset();
+        } else {
+            alert('Failed to send message. Please try again or email us directly.');
+        }
+    } catch (error) {
+        alert('Error sending message. Please email us at bikinisbytelly@outlook.com');
+    }
+});
+</script>
+{% endblock %}

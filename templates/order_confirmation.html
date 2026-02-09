@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Order Confirmation - Bikinis By Telly{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Order Confirmed! 🎉</h1>
+    </div>
+</section>
+
+<section class="confirmation-section">
+    <div class="container">
+        <div class="confirmation-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle" style="font-size: 5rem; color: var(--success);"></i>
+            </div>
+            
+            <h2>Thank You for Your Order!</h2>
+            <p>Your order has been received and we're excited to start handcrafting your bikini.</p>
+            
+            <div class="order-summary-box">
+                <h3>Order Details</h3>
+                <p><strong>Order Number:</strong> {{ order.order_number }}</p>
+                <p><strong>Order Date:</strong> {{ order.created_at.strftime('%B %d, %Y') }}</p>
+                <p><strong>Total:</strong> ${{ order.total }}</p>
+                
+                <h4>Items:</h4>
+                <ul>
+                    {% for item in order.items %}
+                    <li>{{ item.name }} (Size: {{ item.size }}) x {{ item.quantity }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="next-steps">
+                <h3>What Happens Next?</h3>
+                <div class="steps-timeline">
+                    <div class="timeline-step">
+                        <div class="step-icon">✓</div>
+                        <div class="step-content">
+                            <h4>Order Confirmed</h4>
+                            <p>You've received a confirmation email</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="step-icon">🎨</div>
+                        <div class="step-content">
+                            <h4>Handcrafting Begins</h4>
+                            <p>Your bikini will be made over 2-3 weeks</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="step-icon">📦</div>
+                        <div class="step-content">
+                            <h4>Shipping</h4>
+                            <p>You'll receive tracking information</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="step-icon">🌊</div>
+                        <div class="step-content">
+                            <h4>Enjoy!</h4>
+                            <p>Rock your unique handmade bikini</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="confirmation-actions">
+                <a href="{{ url_for('products') }}" class="btn btn-primary">Continue Shopping</a>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

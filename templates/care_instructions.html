@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Care Instructions - Bikinis By Telly{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Care Instructions</h1>
+        <p>Keep your handmade bikini looking beautiful</p>
+    </div>
+</section>
+
+<section class="care-section">
+    <div class="container">
+        <div class="care-content">
+            <div class="care-intro">
+                <p>Your bikini is handcrafted with premium materials. With proper care, it will stay vibrant and beautiful for many seasons. Follow these simple guidelines:</p>
+            </div>
+            
+            <div class="care-instructions">
+                <div class="care-card">
+                    <i class="fas fa-tint"></i>
+                    <h3>Washing</h3>
+                    <ul>
+                        <li>Hand wash only in cold water</li>
+                        <li>Use a mild detergent</li>
+                        <li>Gently squeeze - do not wring or twist</li>
+                        <li>Never machine wash</li>
+                    </ul>
+                </div>
+                
+                <div class="care-card">
+                    <i class="fas fa-sun"></i>
+                    <h3>Drying</h3>
+                    <ul>
+                        <li>Lay flat to dry in shade</li>
+                        <li>Avoid direct sunlight when drying</li>
+                        <li>Never tumble dry</li>
+                        <li>Do not hang - may stretch</li>
+                    </ul>
+                </div>
+                
+                <div class="care-card">
+                    <i class="fas fa-water"></i>
+                    <h3>After Swimming</h3>
+                    <ul>
+                        <li>Rinse immediately after use</li>
+                        <li>Remove chlorine and salt water</li>
+                        <li>Pat dry with a towel</li>
+                        <li>Wash as soon as possible</li>
+                    </ul>
+                </div>
+                
+                <div class="care-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>General Care</h3>
+                    <ul>
+                        <li>Avoid rough surfaces (wood, concrete)</li>
+                        <li>Remove before hot tub use</li>
+                        <li>Store in a cool, dry place</li>
+                        <li>Keep away from oils and lotions</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="care-warnings">
+                <h2>What to Avoid</h2>
+                <div class="warnings-list">
+                    <div class="warning-item">
+                        <i class="fas fa-times-circle"></i>
+                        <p>No bleach or harsh chemicals</p>
+                    </div>
+                    <div class="warning-item">
+                        <i class="fas fa-times-circle"></i>
+                        <p>No ironing</p>
+                    </div>
+                    <div class="warning-item">
+                        <i class="fas fa-times-circle"></i>
+                        <p>No dry cleaning</p>
+                    </div>
+                    <div class="warning-item">
+                        <i class="fas fa-times-circle"></i>
+                        <p>No fabric softener</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="care-tips">
+                <h2>Pro Tips</h2>
+                <ul>
+                    <li>Apply sunscreen and let it dry completely before putting on your bikini</li>
+                    <li>Bring a spare bag to store wet bikinis when traveling</li>
+                    <li>Rotate between multiple bikinis to extend their life</li>
+                    <li>For crocheted pieces, be extra gentle to maintain the pattern</li>
+                </ul>
+            </div>
+            
+            <div class="care-questions">
+                <p>Questions about caring for your bikini? <a href="{{ url_for('contact') }}">Contact us</a> anytime!</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

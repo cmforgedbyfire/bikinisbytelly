@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy - Bikinis By Telly{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Privacy Policy</h1>
+        <p>Last updated: February 2026</p>
+    </div>
+</section>
+
+<section class="legal-section">
+    <div class="container">
+        <div class="legal-content">
+            <h2>Information We Collect</h2>
+            <p>We collect information you provide directly to us when you:</p>
+            <ul>
+                <li>Make a purchase</li>
+                <li>Create a custom order</li>
+                <li>Contact us</li>
+                <li>Subscribe to our newsletter</li>
+            </ul>
+            
+            <h3>Personal Information</h3>
+            <p>This may include:</p>
+            <ul>
+                <li>Name, email address, phone number</li>
+                <li>Shipping address</li>
+                <li>Payment information (processed securely by Stripe)</li>
+                <li>Measurement information for custom orders</li>
+            </ul>
+            
+            <h2>How We Use Your Information</h2>
+            <p>We use the information we collect to:</p>
+            <ul>
+                <li>Process and fulfill your orders</li>
+                <li>Send order confirmations and shipping updates</li>
+                <li>Respond to your inquiries</li>
+                <li>Send newsletters (if you subscribed)</li>
+                <li>Improve our products and services</li>
+            </ul>
+            
+            <h2>Information Sharing</h2>
+            <p>We do not sell or share your personal information with third parties except:</p>
+            <ul>
+                <li>Payment processors (Stripe) to process transactions</li>
+                <li>Shipping carriers to deliver your order</li>
+                <li>As required by law</li>
+            </ul>
+            
+            <h2>Data Security</h2>
+            <p>We implement appropriate security measures to protect your personal information. Payment information is processed securely through Stripe and we never store your full credit card details.</p>
+            
+            <h2>Your Rights</h2>
+            <p>You have the right to:</p>
+            <ul>
+                <li>Access your personal information</li>
+                <li>Request correction of your information</li>
+                <li>Request deletion of your information</li>
+                <li>Unsubscribe from newsletters at any time</li>
+            </ul>
+            
+            <h2>Cookies</h2>
+            <p>We use local storage in your browser to maintain your shopping cart. No tracking cookies are used.</p>
+            
+            <h2>Contact Us</h2>
+            <p>If you have questions about this privacy policy or your data:</p>
+            <p>Email: <a href="mailto:bikinisbytelly@outlook.com">bikinisbytelly@outlook.com</a></p>
+        </div>
+    </div>
+</section>
+
+<style>
+.legal-content {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.legal-content h2 {
+    color: var(--primary-blue);
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+}
+
+.legal-content h3 {
+    color: var(--primary-blue);
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+}
+</style>
+{% endblock %}

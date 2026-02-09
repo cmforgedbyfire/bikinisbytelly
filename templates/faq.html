@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}FAQ - Bikinis By Telly{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Frequently Asked Questions</h1>
+    </div>
+</section>
+
+<section class="faq-section">
+    <div class="container">
+        <div class="faq-list">
+            <div class="faq-item">
+                <h3 class="faq-question">How long does it take to make a bikini?</h3>
+                <div class="faq-answer">
+                    <p>Each bikini is handmade to order and typically takes 2-3 weeks to complete. During busy seasons, this may extend to 3-4 weeks. We'll provide an estimated completion date when you place your order.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">Can I request custom colors?</h3>
+                <div class="faq-answer">
+                    <p>Absolutely! While we love blue tones, we can work with any color you'd like. Just let us know your preferences when ordering, and we'll source the perfect materials.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">What materials do you use?</h3>
+                <div class="faq-answer">
+                    <p>We use premium swimwear fabrics that are chlorine and salt-water resistant, as well as high-quality yarns for our crocheted pieces. All materials are chosen for durability, comfort, and vibrant color.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">Do you offer custom sizing?</h3>
+                <div class="faq-answer">
+                    <p>Yes! Since each bikini is made to order, we can customize the fit to your exact measurements at no extra charge. Just provide your measurements when ordering.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">What's your return/exchange policy?</h3>
+                <div class="faq-answer">
+                    <p>Because each piece is custom-made, we don't accept returns for change of mind. However, if there's an issue with the fit or quality, please contact us within 7 days of receiving your order and we'll work with you to make it right.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">How do I care for my handmade bikini?</h3>
+                <div class="faq-answer">
+                    <p>Hand wash in cold water and lay flat to dry. Avoid wringing or twisting. Rinse after use in chlorine or salt water. With proper care, your bikini will last for many seasons!</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">Do you ship internationally?</h3>
+                <div class="faq-answer">
+                    <p>Currently, we ship within the United States. International shipping may be available - please contact us to discuss.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">What if I need my order by a specific date?</h3>
+                <div class="faq-answer">
+                    <p>Contact us before ordering! We'll do our best to accommodate rush orders when possible. There may be an additional fee for expedited production.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">Can I see examples of your work?</h3>
+                <div class="faq-answer">
+                    <p>Yes! Check out our <a href="{{ url_for('products') }}">product gallery</a> and follow us on Instagram @bikinisbytelly for the latest creations and customer photos.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="faq-contact">
+            <h2>Still Have Questions?</h2>
+            <p>We're here to help! Reach out anytime.</p>
+            <a href="{{ url_for('contact') }}" class="btn btn-primary">Contact Us</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// FAQ Accordion
+document.querySelectorAll('.faq-question').forEach(question => {
+    question.addEventListener('click', () => {
+        const item = question.parentElement;
+        item.classList.toggle('active');
+    });
+});
+</script>
+{% endblock %}

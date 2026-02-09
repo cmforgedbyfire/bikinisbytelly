@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Shipping Information - Bikinis By Telly{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Shipping Information</h1>
+    </div>
+</section>
+
+<section class="info-section">
+    <div class="container">
+        <div class="info-content">
+            <h2>Shipping Times & Costs</h2>
+            
+            <div class="info-box">
+                <h3>Processing Time</h3>
+                <p>Each bikini is handmade to order. Please allow <strong>2-3 weeks</strong> for creation before shipping.</p>
+                <p>During busy seasons (summer months), processing may take 3-4 weeks.</p>
+            </div>
+            
+            <div class="info-box">
+                <h3>Shipping Costs</h3>
+                <ul>
+                    <li><strong>Orders over $100:</strong> FREE standard shipping</li>
+                    <li><strong>Orders under $100:</strong> $10 standard shipping</li>
+                    <li><strong>Expedited shipping:</strong> Available upon request</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h3>Delivery Time</h3>
+                <p><strong>Standard Shipping:</strong> 5-7 business days after order completion</p>
+                <p><strong>Expedited Shipping:</strong> 2-3 business days (additional fee applies)</p>
+            </div>
+            
+            <div class="info-box">
+                <h3>Tracking</h3>
+                <p>You'll receive a tracking number via email once your order ships. Track your package anytime!</p>
+            </div>
+            
+            <div class="info-box">
+                <h3>International Shipping</h3>
+                <p>Currently, we ship within the United States only. International shipping may be available - please contact us to inquire.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.info-box {
+    background: white;
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.info-box h3 {
+    color: var(--primary-blue);
+    margin-bottom: var(--spacing-md);
+}
+</style>
+{% endblock %}

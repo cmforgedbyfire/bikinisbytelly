@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Shopping Cart - Bikinis By Telly{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Shopping Cart</h1>
+    </div>
+</section>
+
+<section class="cart-section">
+    <div class="container">
+        <div class="cart-layout">
+            <div class="cart-items">
+                <div id="cart-content">
+                    <!-- Cart items loaded dynamically -->
+                </div>
+            </div>
+            
+            <aside class="cart-summary">
+                <h3>Order Summary</h3>
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping:</span>
+                    <span id="cart-shipping">Calculated at checkout</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax:</span>
+                    <span id="cart-tax">$0.00</span>
+                </div>
+                <hr>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="cart-total">$0.00</span>
+                </div>
+                
+                <button class="btn btn-primary btn-lg btn-block" id="checkout-btn">
+                    Proceed to Checkout
+                </button>
+                <a href="{{ url_for('products') }}" class="btn btn-secondary btn-block">
+                    Continue Shopping
+                </a>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+{% endblock %}

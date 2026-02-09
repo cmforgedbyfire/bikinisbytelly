@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Terms of Service - Bikinis By Telly{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Terms of Service</h1>
+        <p>Last updated: February 2026</p>
+    </div>
+</section>
+
+<section class="legal-section">
+    <div class="container">
+        <div class="legal-content">
+            <h2>Agreement to Terms</h2>
+            <p>By accessing and using this website, you agree to be bound by these Terms of Service.</p>
+            
+            <h2>Products</h2>
+            <p>All bikinis sold on this website are handmade to order. Colors and styles may vary slightly from photos due to the handmade nature of our products and screen display differences.</p>
+            
+            <h2>Orders</h2>
+            <h3>Processing Time</h3>
+            <p>Handmade orders typically take 2-3 weeks to complete before shipping. Processing times may be longer during peak seasons.</p>
+            
+            <h3>Custom Orders</h3>
+            <p>Custom orders require approval and payment before production begins. Once approved and in production, custom orders cannot be cancelled.</p>
+            
+            <h3>Cancellations</h3>
+            <p>Standard orders may be cancelled within 24 hours of purchase. After production begins, orders cannot be cancelled.</p>
+            
+            <h2>Pricing and Payment</h2>
+            <p>All prices are in USD. We accept payment through Stripe (credit cards, debit cards). Payment is due at time of purchase.</p>
+            
+            <h2>Shipping</h2>
+            <p>Shipping times are estimates and not guaranteed. We are not responsible for delays caused by shipping carriers.</p>
+            
+            <h2>Returns and Exchanges</h2>
+            <p>Due to the custom, made-to-order nature of our products, we do not accept returns for change of mind. See our Returns & Exchanges policy for quality issues and fit concerns.</p>
+            
+            <h2>Intellectual Property</h2>
+            <p>All content on this website, including designs, images, and text, is the property of Bikinis By Telly and protected by copyright laws.</p>
+            
+            <h2>Limitation of Liability</h2>
+            <p>Bikinis By Telly is not liable for any indirect, incidental, or consequential damages arising from the use of our products or website.</p>
+            
+            <h2>Privacy</h2>
+            <p>Your use of our website is also governed by our Privacy Policy.</p>
+            
+            <h2>Changes to Terms</h2>
+            <p>We reserve the right to modify these terms at any time. Continued use of the website constitutes acceptance of modified terms.</p>
+            
+            <h2>Contact</h2>
+            <p>Questions about these terms?</p>
+            <p>Email: <a href="mailto:bikinisbytelly@outlook.com">bikinisbytelly@outlook.com</a></p>
+        </div>
+    </div>
+</section>
+
+<style>
+.legal-content {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.legal-content h2 {
+    color: var(--primary-blue);
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+}
+
+.legal-content h3 {
+    color: var(--primary-blue);
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+}
+</style>
+{% endblock %}

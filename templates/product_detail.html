@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - Bikinis By Telly{% endblock %}
+
+{% block content %}
+<section class="product-detail">
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="{{ url_for('index') }}">Home</a>
+            <span>/</span>
+            <a href="{{ url_for('products') }}">Shop</a>
+            <span>/</span>
+            <span>{{ product.name }}</span>
+        </nav>
+        
+        <div class="product-detail-grid">
+            <!-- Product Images -->
+            <div class="product-images">
+                <div class="main-image">
+                    <img id="main-product-image" src="{{ product.main_image }}" alt="{{ product.name }}">
+                </div>
+                <div class="thumbnail-gallery">
+                    {% for image in product.images %}
+                    <img src="{{ image }}" alt="{{ product.name }}" class="thumbnail" onclick="changeMainImage(this.src)">
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Product Info -->
+            <div class="product-info">
+                <h1>{{ product.name }}</h1>
+                <div class="product-price">${{ product.price }}</div>
+                
+                <div class="product-description">
+                    <p>{{ product.description }}</p>
+                </div>
+                
+                <div class="product-options">
+                    <div class="option-group">
+                        <label for="size-select">Size:</label>
+                        <select id="size-select" required>
+                            <option value="">Select Size</option>
+                            <option value="XS">XS</option>
+                            <option value="S">Small</option>
+                            <option value="M">Medium</option>
+                            <option value="L">Large</option>
+                            <option value="XL">XL</option>
+                            <option value="custom">Custom (provide measurements)</option>
+                        </select>
+                        <a href="{{ url_for('size_guide') }}" class="size-guide-link">Size Guide</a>
+                    </div>
+                    
+                    <div class="option-group" id="custom-measurements" style="display:none;">
+                        <h4>Custom Measurements</h4>
+                        <input type="text" placeholder="Bust (inches)" id="bust">
+                        <input type="text" placeholder="Waist (inches)" id="waist">
+                        <input type="text" placeholder="Hips (inches)" id="hips">
+                    </div>
+                    
+                    {% if product.color_options %}
+                    <div class="option-group">
+                        <label>Available Colors:</label>
+                        <div class="color-swatches">
+                            {% for color in product.color_options %}
+                            <button class="color-swatch" data-color="{{ color }}" style="background-color: {{ color }};" title="{{ color }}"></button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="option-group">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" value="1" min="1" max="10">
+                    </div>
+                </div>
+                
+                <div class="product-actions">
+                    <button class="btn btn-primary btn-lg btn-block" id="add-to-cart">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                    <button class="btn btn-secondary btn-block" onclick="window.location.href='{{ url_for('custom_order') }}'">
+                        <i class="fas fa-pencil-alt"></i> Customize This Design
+                    </button>
+                </div>
+                
+                <div class="product-meta">
+                    <p><i class="fas fa-hand-sparkles"></i> Handmade to order</p>
+                    <p><i class="fas fa-clock"></i> Processing time: 2-3 weeks</p>
+                    <p><i class="fas fa-shipping-fast"></i> Free shipping on orders over $100</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product Details Tabs -->
+        <div class="product-tabs">
+            <div class="tab-headers">
+                <button class="tab-header active" data-tab="details">Details</button>
+                <button class="tab-header" data-tab="care">Care Instructions</button>
+                <button class="tab-header" data-tab="reviews">Reviews</button>
+            </div>
+            
+            <div class="tab-content active" id="details-tab">
+                <h3>Product Details</h3>
+                <ul>
+                    <li>Handmade with premium materials</li>
+                    <li>{{ product.material }}</li>
+                    <li>Custom sizing available</li>
+                    <li>Made to order</li>
+                </ul>
+            </div>
+            
+            <div class="tab-content" id="care-tab">
+                <h3>Care Instructions</h3>
+                <ul>
+                    <li>Hand wash in cold water</li>
+                    <li>Lay flat to dry</li>
+                    <li>Do not bleach</li>
+                    <li>Avoid rough surfaces</li>
+                    <li>Rinse after use in chlorine or salt water</li>
+                </ul>
+            </div>
+            
+            <div class="tab-content" id="reviews-tab">
+                <h3>Customer Reviews</h3>
+                <div id="reviews-container">
+                    <!-- Reviews loaded dynamically -->
+                </div>
+                
+                <div class="review-form">
+                    <h4>Leave a Review</h4>
+                    <form id="review-form">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <div class="form-group">
+                            <label>Your Name:</label>
+                            <input type="text" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Rating:</label>
+                            <div class="star-rating">
+                                <input type="radio" name="rating" value="5" id="star5"><label for="star5">★</label>
+                                <input type="radio" name="rating" value="4" id="star4"><label for="star4">★</label>
+                                <input type="radio" name="rating" value="3" id="star3"><label for="star3">★</label>
+                                <input type="radio" name="rating" value="2" id="star2"><label for="star2">★</label>
+                                <input type="radio" name="rating" value="1" id="star1"><label for="star1">★</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Review:</label>
+                            <textarea name="review" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/product-detail.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Custom Order - Bikinis By Telly{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Custom Bikini Order</h1>
+        <p>Design your perfect bikini, made just for you</p>
+    </div>
+</section>
+
+<section class="custom-order-section">
+    <div class="container">
+        <form id="custom-order-form" class="custom-form">
+            <!-- Contact Info -->
+            <div class="form-section">
+                <h2>Your Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customer-name">Full Name: *</label>
+                        <input type="text" id="customer-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-email">Email: *</label>
+                        <input type="email" id="customer-email" name="email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="customer-phone">Phone Number: *</label>
+                    <input type="tel" id="customer-phone" name="phone" required>
+                </div>
+            </div>
+            
+            <!-- Design Preferences -->
+            <div class="form-section">
+                <h2>Design Your Bikini</h2>
+                
+                <div class="form-group">
+                    <label for="style">Style: *</label>
+                    <select id="style" name="style" required>
+                        <option value="">Select a style</option>
+                        <option value="triangle-top">Triangle Top</option>
+                        <option value="halter-top">Halter Top</option>
+                        <option value="bandeau">Bandeau</option>
+                        <option value="one-piece">One Piece</option>
+                        <option value="high-waist">High Waist Bottom</option>
+                        <option value="cheeky">Cheeky Bottom</option>
+                        <option value="full-coverage">Full Coverage Bottom</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="primary-color">Primary Color: *</label>
+                    <input type="text" id="primary-color" name="primary_color" placeholder="e.g., Ocean Blue, Turquoise" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="secondary-color">Secondary/Accent Color (optional):</label>
+                    <input type="text" id="secondary-color" name="secondary_color" placeholder="e.g., Coral, White">
+                </div>
+                
+                <div class="form-group">
+                    <label for="pattern">Pattern/Texture:</label>
+                    <select id="pattern" name="pattern">
+                        <option value="solid">Solid Color</option>
+                        <option value="crochet">Crochet</option>
+                        <option value="sewn">Sewn</option>
+                        <option value="mixed">Mixed (Crochet & Sewn)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="special-requests">Special Requests or Details:</label>
+                    <textarea id="special-requests" name="special_requests" rows="4" placeholder="Any specific design elements, embellishments, or modifications you'd like"></textarea>
+                </div>
+            </div>
+            
+            <!-- Measurements -->
+            <div class="form-section">
+                <h2>Your Measurements</h2>
+                <p class="help-text">Please provide accurate measurements for the perfect fit. <a href="{{ url_for('size_guide') }}" target="_blank">View measurement guide</a></p>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bust">Bust (inches): *</label>
+                        <input type="number" id="bust" name="bust" step="0.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="under-bust">Under Bust (inches): *</label>
+                        <input type="number" id="under-bust" name="under_bust" step="0.5" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="waist">Waist (inches): *</label>
+                        <input type="number" id="waist" name="waist" step="0.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hips">Hips (inches): *</label>
+                        <input type="number" id="hips" name="hips" step="0.5" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="additional-measurements">Additional Measurements or Notes:</label>
+                    <textarea id="additional-measurements" name="additional_measurements" rows="3" placeholder="Any other measurements or fit preferences"></textarea>
+                </div>
+            </div>
+            
+            <!-- Budget -->
+            <div class="form-section">
+                <h2>Budget</h2>
+                <div class="form-group">
+                    <label for="budget">Estimated Budget: *</label>
+                    <select id="budget" name="budget" required>
+                        <option value="">Select budget range</option>
+                        <option value="50-75">$50 - $75</option>
+                        <option value="75-100">$75 - $100</option>
+                        <option value="100-150">$100 - $150</option>
+                        <option value="150+">$150+</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Reference Images -->
+            <div class="form-section">
+                <h2>Inspiration Images (Optional)</h2>
+                <div class="form-group">
+                    <label for="reference-images">Upload reference photos:</label>
+                    <input type="file" id="reference-images" name="reference_images" multiple accept="image/*">
+                    <p class="help-text">Upload photos of styles you like for inspiration</p>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <button type="submit" class="btn btn-primary btn-lg">Submit Custom Order Request</button>
+                <p class="help-text">We'll review your request and contact you within 24 hours with a quote and timeline!</p>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/custom-order.js') }}"></script>
+{% endblock %}

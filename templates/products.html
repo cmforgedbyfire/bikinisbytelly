@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Shop Bikinis - Bikinis By Telly{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Shop Handmade Bikinis</h1>
+        <p>Browse our collection of handcrafted bikinis</p>
+    </div>
+</section>
+
+<section class="products-section">
+    <div class="container">
+        <div class="products-layout">
+            <!-- Filters Sidebar -->
+            <aside class="filters-sidebar">
+                <h3>Filters</h3>
+                
+                <div class="filter-group">
+                    <h4>Style</h4>
+                    <label><input type="checkbox" name="style" value="triangle"> Triangle</label>
+                    <label><input type="checkbox" name="style" value="halter"> Halter</label>
+                    <label><input type="checkbox" name="style" value="bandeau"> Bandeau</label>
+                    <label><input type="checkbox" name="style" value="one-piece"> One Piece</label>
+                    <label><input type="checkbox" name="style" value="high-waist"> High Waist</label>
+                </div>
+                
+                <div class="filter-group">
+                    <h4>Color</h4>
+                    <label><input type="checkbox" name="color" value="blue"> Blue</label>
+                    <label><input type="checkbox" name="color" value="turquoise"> Turquoise</label>
+                    <label><input type="checkbox" name="color" value="coral"> Coral</label>
+                    <label><input type="checkbox" name="color" value="white"> White</label>
+                    <label><input type="checkbox" name="color" value="black"> Black</label>
+                    <label><input type="checkbox" name="color" value="multicolor"> Multicolor</label>
+                </div>
+                
+                <div class="filter-group">
+                    <h4>Price Range</h4>
+                    <label><input type="radio" name="price" value="all" checked> All</label>
+                    <label><input type="radio" name="price" value="0-50"> Under $50</label>
+                    <label><input type="radio" name="price" value="50-100"> $50 - $100</label>
+                    <label><input type="radio" name="price" value="100-150"> $100 - $150</label>
+                    <label><input type="radio" name="price" value="150+"> Over $150</label>
+                </div>
+                
+                <button class="btn btn-secondary btn-block" id="clear-filters">Clear Filters</button>
+            </aside>
+            
+            <!-- Products Grid -->
+            <div class="products-main">
+                <div class="products-toolbar">
+                    <div class="results-count">
+                        <span id="product-count">0</span> products found
+                    </div>
+                    <div class="sort-dropdown">
+                        <label for="sort-select">Sort by:</label>
+                        <select id="sort-select">
+                            <option value="newest">Newest</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="name">Name: A-Z</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="product-grid" id="products-grid">
+                    <!-- Products loaded dynamically -->
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading products...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/products.js') }}"></script>
+{% endblock %}

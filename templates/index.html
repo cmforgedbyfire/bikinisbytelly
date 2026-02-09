@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Handcrafted Bikinis Made Just For You</h1>
+        <p class="hero-subtitle">Each piece is sewn and crocheted with love, using premium materials</p>
+        <div class="hero-buttons">
+            <a href="{{ url_for('products') }}" class="btn btn-primary">Shop Now</a>
+            <a href="{{ url_for('custom_order') }}" class="btn btn-secondary">Custom Order</a>
+        </div>
+    </div>
+    <div class="hero-image">
+        <!-- Background image set in CSS -->
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+    <div class="container">
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-hand-sparkles"></i>
+                <h3>Handmade</h3>
+                <p>Every bikini is carefully crafted by hand with attention to detail</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-ruler"></i>
+                <h3>Custom Sizing</h3>
+                <p>Get the perfect fit with custom measurements and sizing options</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-palette"></i>
+                <h3>Your Colors</h3>
+                <p>Choose from a wide variety of colors and patterns</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-heart"></i>
+                <h3>Made with Love</h3>
+                <p>Each piece is created with passion and care</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+<section class="featured-products">
+    <div class="container">
+        <h2 class="section-title">Featured Styles</h2>
+        <p class="section-subtitle">Popular handmade bikinis from our collection</p>
+        
+        <div class="product-grid" id="featured-products">
+            <!-- Products will be loaded dynamically -->
+        </div>
+        
+        <div class="text-center">
+            <a href="{{ url_for('products') }}" class="btn btn-primary">View All Products</a>
+        </div>
+    </div>
+</section>
+
+<!-- Process Section -->
+<section class="process">
+    <div class="container">
+        <h2 class="section-title">How It Works</h2>
+        <div class="process-steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Choose or Customize</h3>
+                <p>Select from our collection or create a custom design</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Provide Measurements</h3>
+                <p>Follow our size guide or send custom measurements</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>We Create</h3>
+                <p>Your bikini is handcrafted with care (2-3 weeks)</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Enjoy!</h3>
+                <p>Receive your unique, handmade bikini</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Instagram Feed -->
+<section class="instagram-feed">
+    <div class="container">
+        <h2 class="section-title">Follow Our Journey</h2>
+        <p class="section-subtitle">@bikinisbytelly</p>
+        <div class="instagram-grid" id="instagram-grid">
+            <!-- Instagram posts will be loaded here -->
+            <div class="instagram-placeholder">
+                <i class="fab fa-instagram"></i>
+                <p>Connect your Instagram to display photos here</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta">
+    <div class="container">
+        <h2>Ready for Your Perfect Bikini?</h2>
+        <p>Start your custom order today and get a bikini that's uniquely yours</p>
+        <a href="{{ url_for('custom_order') }}" class="btn btn-primary btn-lg">Start Custom Order</a>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Load featured products
+    fetch('/api/products/featured')
+        .then(response => response.json())
+        .then(products => {
+            const grid = document.getElementById('featured-products');
+            if (products.length === 0) {
+                grid.innerHTML = '<p class="text-center">Coming soon! Check back for new styles.</p>';
+            } else {
+                grid.innerHTML = products.map(product => `
+                    <div class="product-card">
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p class="price">$${product.price}</p>
+                        <a href="/product/${product.id}" class="btn btn-secondary">View Details</a>
+                    </div>
+                `).join('');
+            }
+        })
+        .catch(error => console.error('Error loading products:', error));
+</script>
+{% endblock %}

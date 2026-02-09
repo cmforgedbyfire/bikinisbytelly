@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Returns & Exchanges - Bikinis By Telly{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Returns & Exchanges</h1>
+    </div>
+</section>
+
+<section class="info-section">
+    <div class="container">
+        <div class="info-content">
+            <h2>Our Policy</h2>
+            
+            <div class="info-box">
+                <h3>Custom-Made Items</h3>
+                <p>Because each bikini is handmade to order with your specific measurements and color choices, we cannot accept returns or exchanges for change of mind.</p>
+            </div>
+            
+            <div class="info-box">
+                <h3>Quality Issues</h3>
+                <p>If there's a quality issue or defect with your bikini, please contact us within <strong>7 days</strong> of receiving your order.</p>
+                <p>We'll work with you to make it right - whether that's a replacement, repair, or refund.</p>
+            </div>
+            
+            <div class="info-box">
+                <h3>Fit Issues</h3>
+                <p>If your bikini doesn't fit as expected and you followed our size guide:</p>
+                <ul>
+                    <li>Contact us within 7 days of receipt</li>
+                    <li>Provide photos showing the fit issue</li>
+                    <li>We'll work with you on alterations or a remake</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h3>Wrong Item Received</h3>
+                <p>If you received the wrong item, contact us immediately. We'll send you the correct item at no additional cost.</p>
+            </div>
+            
+            <div class="info-box">
+                <h3>Damaged in Shipping</h3>
+                <p>If your bikini arrives damaged:</p>
+                <ul>
+                    <li>Take photos of the damage and packaging</li>
+                    <li>Contact us within 48 hours</li>
+                    <li>We'll file a claim and send a replacement</li>
+                </ul>
+            </div>
+            
+            <div class="contact-cta">
+                <h3>Need to Start a Return or Exchange?</h3>
+                <p>Contact us at <a href="mailto:bikinisbytelly@outlook.com">bikinisbytelly@outlook.com</a></p>
+                <p>Include your order number and photos if applicable.</p>
+                <a href="{{ url_for('contact') }}" class="btn btn-primary">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.info-box {
+    background: white;
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.info-box h3 {
+    color: var(--primary-blue);
+    margin-bottom: var(--spacing-md);
+}
+
+.contact-cta {
+    background: var(--neutral-sand);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    margin-top: var(--spacing-xl);
+}
+</style>
+{% endblock %}
